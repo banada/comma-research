@@ -5,7 +5,7 @@ import numpy as np
 import h5py
 import pygame
 import json
-from keras.models import model_from_json
+from tensorflow.keras.models import model_from_json
 
 pygame.init()
 size = (320*2, 160*2)
@@ -52,7 +52,7 @@ def draw_pt(img, x, y, color, sz=1):
   row, col = perspective_tform(x, y)
   if row >= 0 and row < img.shape[0] and\
      col >= 0 and col < img.shape[1]:
-    img[row-sz:row+sz, col-sz:col+sz] = color
+    img[int(row)-sz:int(row)+sz, int(col)-sz:int(col)+sz] = color
 
 def draw_path(img, path_x, path_y, color):
   for x, y in zip(path_x, path_y):
@@ -104,13 +104,13 @@ if __name__ == "__main__":
   log = h5py.File("dataset/log/"+dataset+".h5", "r")
   cam = h5py.File("dataset/camera/"+dataset+".h5", "r")
 
-  print log.keys()
+  print(log.keys())
 
   # skip to highway
   for i in range(skip*100, log['times'].shape[0]):
     if i%100 == 0:
-      print "%.2f seconds elapsed" % (i/100.0)
-    img = cam['X'][log['cam1_ptr'][i]].swapaxes(0,2).swapaxes(0,1)
+      print("%.2f seconds elapsed" % (i/100.0))
+    img = cam['X'][int(log['cam1_ptr'][i])].swapaxes(0,2).swapaxes(0,1)
 
     predicted_steers = model.predict(img[None, :, :, :].transpose(0, 3, 1, 2))[0][0]
 
