@@ -99,23 +99,24 @@ if __name__ == "__main__":
 
   # default dataset is the validation data on the highway
   dataset = args.dataset
-  skip = 300
+  skip = 0
 
   log = h5py.File("dataset/log/"+dataset+".h5", "r")
   cam = h5py.File("dataset/camera/"+dataset+".h5", "r")
 
-  print(log.keys())
-
   # skip to highway
-  for i in range(skip*100, log['times'].shape[0]):
+  for i in range(skip*100, log['steering_angle'].shape[0]):
     if i%100 == 0:
       print("%.2f seconds elapsed" % (i/100.0))
-    img = cam['X'][int(log['cam1_ptr'][i])].swapaxes(0,2).swapaxes(0,1)
+    img = cam['X'][int(log['frame'][i])]
 
-    predicted_steers = model.predict(img[None, :, :, :].transpose(0, 3, 1, 2))[0][0]
+    predicted_steers = model.predict(img[None, :, :, :])[0][0]
 
     angle_steers = log['steering_angle'][i]
-    speed_ms = log['speed'][i]
+    # TODO this is terrible, need to get actual speed
+    # assume 1 m/s
+    #speed_ms = log['speed'][i]
+    speed_ms = 1
 
     draw_path_on(img, speed_ms, -angle_steers/10.0)
     draw_path_on(img, speed_ms, -predicted_steers/10.0, (0, 255, 0))
