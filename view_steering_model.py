@@ -113,10 +113,8 @@ if __name__ == "__main__":
     predicted_steers = model.predict(img[None, :, :, :])[0][0]
 
     angle_steers = log['steering_angle'][i]
-    # TODO this is terrible, need to get actual speed
-    # assume 1 m/s
-    #speed_ms = log['speed'][i]
-    speed_ms = 1
+    # Invert because comma 3 moves backwards as a comma body
+    speed_ms = -1 * log['speed'][i]
 
     draw_path_on(img, speed_ms, -angle_steers/10.0)
     draw_path_on(img, speed_ms, -predicted_steers/10.0, (0, 255, 0))

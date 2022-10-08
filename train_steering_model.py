@@ -20,7 +20,7 @@ tf.config.experimental.set_memory_growth(gpus[0], True)
 
 def gen(hwm, host, port):
   for tup in client_generator(hwm=hwm, host=host, port=port):
-    X, Y = tup
+    X, Y, _ = tup
     Y = Y[:, -1]
     if X.shape[1] == 1:  # no temporal context
       X = X[:, -1]

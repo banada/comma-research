@@ -168,7 +168,7 @@ def start_server(data_stream, port=5557, hwm=20):
 
 # Example
 if __name__ == "__main__":
-  from dask_generator_body import datagen
+  from dask_generator import datagen
   import argparse
 
   # Parameters
@@ -183,14 +183,14 @@ if __name__ == "__main__":
   parser.add_argument('--validation', dest='validation', action='store_true', default=False, help='Serve validation dataset instead.')
   args, more = parser.parse_known_args()
 
-  # 9 for training
+  # Training
   train_path = [
-    './dataset/camera/test-crop-center.h5',
+    './dataset/camera/2022-09-30--19-04-25--7.h5',
   ]
 
-  # 2 for validation
+  # Validation
   validation_path = [
-    './dataset/camera/test-crop-center.h5',
+    './dataset/camera/2022-09-30--19-04-25--6.h5',
   ]
 
   if args.validation:
