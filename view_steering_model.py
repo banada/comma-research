@@ -67,7 +67,9 @@ def calc_curvature(v_ego, angle_steers, angle_offset=0):
   wheel_base = 2.67   # from http://www.edmunds.com/acura/ilx/2016/sedan/features-specs/
 
   angle_steers_rad = (angle_steers - angle_offset) * deg_to_rad
-  curvature = angle_steers_rad/(steer_ratio * wheel_base * (1. + slip_fator * v_ego**2))
+  # speed is squared, so we multiply by -1
+  # to invert for the comma body (c3 moves backwards)
+  curvature = angle_steers_rad/(steer_ratio * wheel_base * (-1 * (1. + slip_fator * v_ego**2)))
   return curvature
 
 def calc_lookahead_offset(v_ego, angle_steers, d_lookahead, angle_offset=0):
