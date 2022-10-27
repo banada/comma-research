@@ -3,6 +3,7 @@
 Note:
 Part of this code was copied and modified from github.com/mila-udem/fuel.git (MIT License)
 """
+import os
 import logging
 
 import numpy
@@ -183,15 +184,22 @@ if __name__ == "__main__":
   parser.add_argument('--validation', dest='validation', action='store_true', default=False, help='Serve validation dataset instead.')
   args, more = parser.parse_known_args()
 
-  # Training
-  train_path = [
-    './dataset/camera/2022-09-30--19-04-25--7.h5',
-  ]
-
-  # Validation
-  validation_path = [
-    './dataset/camera/2022-09-30--19-04-25--6.h5',
-  ]
+  # Split datasets training/validation
+  trn_dir = '{BODY_DATASET_DIR}/camera/training'
+  val_dir = '{BODY_DATASET_DIR}/camera/validation'
+  trn = os.listdir(trn_dir)
+  val = os.listdir(val_dir)
+  train_path = []
+  validation_path = []
+  # Use files, not directories
+  for file in trn:
+    f_path = os.path.join(trn_dir, file)
+    if os.path.isfile(f_path):
+      train_path.append(f_path)
+  for file in val:
+    f_path = os.path.join(val_dir, file)
+    if os.path.isfile(f_path):
+      validation_path.append(f_path)
 
   if args.validation:
     datapath = validation_path

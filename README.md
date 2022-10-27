@@ -87,3 +87,35 @@ Show us amazing stuff on this dataset
 ## Credits
 
 Riccardo Biasini, George Hotz, Sam Khalandovsky, Eder Santana, and Niel van der Westhuizen
+
+## body tools pipeline (WIP)
+
+`sort-videos.sh` is an interactive script to preview and sort videos from the body.
+
+`augment-videos.sh` is used to turn one video into many through viewport manipulation (cropping and translating).
+
+`process-all.sh` calls `process-body-data.sh` to convert HEVC to HDF5. These depend on openpilot and should be run from `openpilot/tools/lib`.
+TODO: combine these, rename
+TODO: separate out openpilot dependency
+
+`split-dataset.py` splits the training and validation sets
+TODO: split test set as well
+
+Run the servers in separate terminals and train:
+```
+./server.py --batch 200 --port 5557
+./server.py --batch 200 --validation --port 5556
+./train_steering_model.py --port 5557 --val_port 5556 --epoch X
+./view_steering_model.py ./outputs/steering_model/steering_angle.json --dataset={TEST_FILE_NAME}
+```
+
+## Setup
+
+### Environment variables:
+`$BODY_VIDEO_DIR` should contain all HEVC video files
+`$BODY_DATASET_DIR` should contain:
+```
+camera/
+log/
+```
+

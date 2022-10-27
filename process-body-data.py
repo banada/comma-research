@@ -8,11 +8,15 @@ from tools.lib.logreader import LogReader
 # Run this from 'openpilot/tools/lib'
 
 path = sys.argv[1]
+file = sys.argv[2]
+# Augmented data filenames
+shift = file.replace('.hevc', '')
+shift = shift.replace('dcamera-', '')
 log = f"{path}/rlog"
-cam = f"{path}/dcamera-crop-center.hevc"
+cam = f"{path}/{file}"
 segment_path = os.path.dirname(path)
 segment = os.path.basename(segment_path)
-project_dir = "{HOME}/comma-research".format(**os.environ)
+dataset_dir = "{BODY_DATASET_DIR}".format(**os.environ)
 
 # The frame rate is lower than the sample rate, so we downsample
 frame = 0
@@ -39,7 +43,7 @@ speed = np.array(speed)
 steer_angles = np.array(steer_angles)
 frames = np.array(frames)
 
-with h5py.File(f"{project_dir}/dataset/log/{segment}.h5", "w") as logfile:
+with h5py.File(f"{dataset_dir}/log/{segment}-{shift}.h5", "w") as logfile:
   steering_angle_ds = logfile.create_dataset("steering_angle", steer_angles.shape, data=steer_angles)
   speed_ds = logfile.create_dataset("speed", speed.shape, data=speed)
   frame_ds = logfile.create_dataset("frame", frames.shape, data=frames)
@@ -47,7 +51,7 @@ with h5py.File(f"{project_dir}/dataset/log/{segment}.h5", "w") as logfile:
 # HEVC to HDF5
 print(f"Processing {cam}")
 video = skvideo.io.vread(cam)
-with h5py.File(f"{project_dir}/dataset/camera/{segment}.h5", "w") as camfile:
+with h5py.File(f"{dataset_dir}/camera/{segment}-{shift}.h5", "w") as camfile:
   x = camfile.create_dataset("X", video.shape, data=video)
 
 print(f"Done processing")

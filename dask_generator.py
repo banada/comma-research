@@ -9,6 +9,9 @@ import time
 import logging
 import traceback
 
+vwidth = 320
+vheight = 160
+
 # logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -77,7 +80,7 @@ def datagen(filter_files, time_len=1, batch_size=256, ignore_goods=False):
 
   logger.info("camera files {}".format(len(c5x)))
 
-  X_batch = np.zeros((batch_size, time_len, 160, 320, 3), dtype='uint8')
+  X_batch = np.zeros((batch_size, time_len, vheight, vwidth, 3), dtype='uint8')
   angle_batch = np.zeros((batch_size, time_len, 1), dtype='float32')
   speed_batch = np.zeros((batch_size, time_len, 1), dtype='float32')
 
@@ -114,7 +117,7 @@ def datagen(filter_files, time_len=1, batch_size=256, ignore_goods=False):
         count += 1
 
       # sanity check
-      assert X_batch.shape == (batch_size, time_len, 160, 320, 3)
+      assert X_batch.shape == (batch_size, time_len, vheight, vwidth, 3)
 
       logging.debug("load image : {}s".format(time.time()-t))
       print("%5.2f ms" % ((time.time()-start)*1000.0))
