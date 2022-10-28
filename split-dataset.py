@@ -3,7 +3,7 @@ import shutil
 import random
 
 # Make directories
-dataset_dir = '{BODY_DATASET_DIR}'
+dataset_dir = os.environ.get('BODY_DATASET_DIR')
 try:
   os.mkdir(f'{dataset_dir}/camera/training')
   os.mkdir(f'{dataset_dir}/camera/validation')

@@ -6,21 +6,6 @@ Based on [comma.ai's research](https://github.com/commaai/research), adapted for
 
 Riccardo Biasini, George Hotz, Sam Khalandovsky, Eder Santana, and Niel van der Westhuizen
 
-The dataset folder structure is the following:
-```bash
-+-- dataset
-|   +-- camera
-|   |   +-- 2016-04-21--14-48-08
-|   |   ...
-|   +-- log
-|   |   +-- 2016-04-21--14-48-08
-|   |   ...
-```
-
-All the files come in hdf5 format and are named with the time they were recorded.
-The camera dataset has shape `number_frames x 3 x 160 x 320` and `uint8` type.
-between camera frames and the other measurements.
-
 ## Requirements
 [anaconda](https://www.continuum.io/downloads)  
 [tensorflow-0.9](https://github.com/tensorflow/tensorflow)  
@@ -33,8 +18,7 @@ between camera frames and the other measurements.
 
 `augment-videos.sh` is used to turn one video into many through viewport manipulation (cropping and translating).
 
-`process-all.sh` calls `process-body-data.sh` to convert HEVC to HDF5. These depend on openpilot and should be run from `openpilot/tools/lib`.
-TODO: combine these, rename
+`video2hdf5.py` converts HEVC and rlog to HDF5. These depend on openpilot and should be run from `openpilot/tools/lib`.
 TODO: separate out openpilot dependency
 
 `split-dataset.py` splits the training and validation sets
@@ -57,4 +41,19 @@ Run the servers in separate terminals and train:
 camera/
 log/
 ```
+
+The dataset folder structure is the following:
+```bash
++-- dataset
+|   +-- camera
+|   |   +-- 2016-04-21--14-48-08
+|   |   ...
+|   +-- log
+|   |   +-- 2016-04-21--14-48-08
+|   |   ...
+```
+
+All the files come in hdf5 format and are named with the time they were recorded.
+The camera dataset has shape `number_frames x 3 x 160 x 320` and `uint8` type.
+between camera frames and the other measurements.
 
