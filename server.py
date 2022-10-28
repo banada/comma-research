@@ -185,8 +185,9 @@ if __name__ == "__main__":
   args, more = parser.parse_known_args()
 
   # Split datasets training/validation
-  trn_dir = '{BODY_DATASET_DIR}/camera/training'
-  val_dir = '{BODY_DATASET_DIR}/camera/validation'
+  dataset_dir = os.environ.get('BODY_DATASET_DIR')
+  trn_dir = dataset_dir + '/camera/training'
+  val_dir = dataset_dir + '/camera/validation'
   trn = os.listdir(trn_dir)
   val = os.listdir(val_dir)
   train_path = []
